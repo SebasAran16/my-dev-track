@@ -32,7 +32,7 @@ export default function ThanksLayout({ children }) {
         <meta name="twitter:description" content="Thank you for reaching out!" />
         <meta name="twitter:image" content={OG_IMAGE} />
 
-        <meta name="theme-color" content="#0d0d0d" />
+        <meta name="theme-color" content="#0a0a0a" />
       </Head>
       <Header />
       <main className={styles.main}>{children}</main>

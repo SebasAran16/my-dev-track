@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import styles from "@/styles/Home.module.sass";
 import {
   certificationAnchorId,
@@ -17,93 +16,119 @@ const parseDay = (value) => {
 };
 
 const formatDay = (value, locale) =>
-  parseDay(value).toLocaleDateString(locale, { year: "numeric", month: "long" });
+  parseDay(value).toLocaleDateString(locale, {
+    year: "numeric",
+    month: "short",
+  });
 
-export default function CertificationList({ certifications, t, locale }) {
+export default function CertificationList({ certifications, t, locale, now }) {
   const scrollToAnchor = useScrollToAnchor();
 
   return (
-    <div className={styles.certificationsGrid}>
-      {certifications.map((certification) => {
+    <div className={styles.certGrid}>
+      {certifications.map((certification, index) => {
+        // Expiry is only judged on the client, where "now" is real.
         const expired =
-          certification.expiresOn && parseDay(certification.expiresOn) < new Date();
+          now &&
+          certification.expiresOn &&
+          parseDay(certification.expiresOn) < now;
+
+        const validity = [
+          certification.issuedOn &&
+            `${t("portfolio.certifications.issued")} ${formatDay(
+              certification.issuedOn,
+              locale
+            )}`,
+          certification.expiresOn
+            ? `${t(
+                expired
+                  ? "portfolio.certifications.expired"
+                  : "portfolio.certifications.expires"
+              )} ${formatDay(certification.expiresOn, locale)}`
+            : t("portfolio.certifications.noExpiration"),
+        ].filter(Boolean);
 
         return (
-          <article
-            className={styles.certification}
-            key={certification.id}
-            id={certificationAnchorId(certification.id)}
-          >
-            <h4>
-              <Link href={certification.file} target="_blank">
-                {certification.name}
-              </Link>
-            </h4>
-            <p className={styles.certificationIssuer}>{certification.issuer}</p>
-
-            {certification.company && (
-              <button
-                type="button"
-                className={styles.certificationCompany}
-                title={certification.company.name}
-                onClick={() =>
-                  scrollToAnchor(experienceAnchorId(certification.companyId))
-                }
-              >
-                <Image
-                  src={certification.company.image.src}
-                  alt={certification.company.image.alt}
-                  width="28"
-                  height="28"
-                />
-                <span>
-                  {t("portfolio.certifications.throughCompany", {
-                    company: certification.company.name,
-                  })}
+          <div key={certification.id} data-reveal style={{ "--d": index }}>
+            <article
+              className={styles.cert}
+              id={certificationAnchorId(certification.id)}
+            >
+              <div className={styles.certTop}>
+                <span className={styles.certIssuer}>
+                  {certification.issuer}
                 </span>
-              </button>
-            )}
+                <ul className={styles.certValidity}>
+                  {validity.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
 
-            <p className={styles.certificationValidity}>
-              {[
-                certification.issuedOn &&
-                  `${t("portfolio.certifications.issued")}: ${formatDay(
-                    certification.issuedOn,
-                    locale
-                  )}`,
-                certification.expiresOn
-                  ? `${t(
-                      expired
-                        ? "portfolio.certifications.expired"
-                        : "portfolio.certifications.expires"
-                    )}: ${formatDay(certification.expiresOn, locale)}`
-                  : t("portfolio.certifications.noExpiration"),
-              ]
-                .filter(Boolean)
-                .join(" · ")}
-            </p>
+              <h3 className={styles.certName}>
+                <a href={certification.file} target="_blank" rel="noreferrer">
+                  {certification.name}
+                </a>
+              </h3>
 
-            <p className={styles.certificationDescription}>
-              {certification.description[locale] || certification.description.en}
-            </p>
+              <p className={styles.certDescription}>
+                {certification.description[locale] ||
+                  certification.description.en}
+              </p>
 
-            <ul className={styles.certificationSkills}>
-              {certification.skills.map((skill) => (
-                <li key={skill}>{skill}</li>
-              ))}
-            </ul>
+              <ul className={styles.certSkills}>
+                {certification.skills.map((skill) => (
+                  <li key={skill}>{skill}</li>
+                ))}
+              </ul>
 
-            <div className={styles.certificationLinks}>
-              <Link href={certification.file} target="_blank">
-                {t("portfolio.certifications.viewCertificate")}
-              </Link>
-              {certification.credentialUrl && (
-                <Link href={certification.credentialUrl} target="_blank">
-                  {t("portfolio.certifications.verify")}
-                </Link>
-              )}
-            </div>
-          </article>
+              <div className={styles.certFooter}>
+                <div className={styles.certLinks}>
+                  <a href={certification.file} target="_blank" rel="noreferrer">
+                    {t("portfolio.certifications.viewCertificate")}
+                    <span className={styles.arrow} aria-hidden="true">
+                      ↗
+                    </span>
+                  </a>
+                  {certification.credentialUrl && (
+                    <a
+                      href={certification.credentialUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t("portfolio.certifications.verify")}
+                      <span className={styles.arrow} aria-hidden="true">
+                        ↗
+                      </span>
+                    </a>
+                  )}
+                </div>
+
+                {certification.company && (
+                  <button
+                    type="button"
+                    className={styles.certCompany}
+                    onClick={() =>
+                      scrollToAnchor(
+                        experienceAnchorId(certification.companyId)
+                      )
+                    }
+                  >
+                    <Image
+                      src={certification.company.image.src}
+                      alt=""
+                      width="22"
+                      height="22"
+                    />
+                    {t("portfolio.certifications.throughCompany", {
+                      company: certification.company.name,
+                    })}
+                    <span aria-hidden="true">↑</span>
+                  </button>
+                )}
+              </div>
+            </article>
+          </div>
         );
       })}
     </div>

@@ -47,7 +47,7 @@ export default function MainLayout({ children }) {
         <meta itemProp="description" content={OG_DESCRIPTION} />
         <meta itemProp="image" content={OG_IMAGE} />
 
-        <meta name="theme-color" content="#0d0d0d" />
+        <meta name="theme-color" content="#0a0a0a" />
       </Head>
       <Header />
       <main className={styles.main}>{children}</main>

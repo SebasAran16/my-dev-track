@@ -1,210 +1,216 @@
-import React, { useEffect, useState } from "react";
-import styles from "@/styles/layout/Header.module.sass";
-import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import styles from "@/styles/layout/Header.module.sass";
 import { useLenis } from "@/providers/LenisProvider";
+import { useScrollTo } from "@/hooks/useScrollToAnchor";
+import { socials } from "@/constants/socials";
+
+const NAV_ITEMS = [
+  { id: "about", labelKey: "buttons.about" },
+  { id: "experience", labelKey: "buttons.experience" },
+  { id: "projects", labelKey: "buttons.projects" },
+  { id: "certifications", labelKey: "buttons.certifications" },
+  { id: "contact", labelKey: "buttons.contact" },
+];
+
+const LOCALES = ["en", "es"];
 
 export default function Header() {
   const router = useRouter();
   const { t } = useTranslation("header");
   const lenis = useLenis();
+  const scrollTo = useScrollTo();
   const [navOpen, setNavOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [active, setActive] = useState(null);
+  const lastY = useRef(0);
 
-  const toggleNav = () => setNavOpen((open) => !open);
-  const closeNav = () => setNavOpen(false);
+  const isHome = router.pathname === "/";
 
-  const navPressed = (e) => {
-    const id = e.target.id;
-    const el = id === "contact"
-      ? document.querySelector("footer")
-      : document.querySelector(`[data-section="${id}"]`);
-    if (!el) {
-      closeNav();
-      return;
-    }
-    // Keep the section top visible below the sticky desktop header
-    const offset = window.innerWidth >= 992 ? -80 : 0;
-    if (lenis) {
-      lenis.scrollTo(el, { offset, duration: 1.2 });
-    } else {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-    closeNav();
-  };
+  // Solid background once the page moves; hide while scrolling down and
+  // bring it back as soon as the visitor scrolls up.
+  useEffect(() => {
+    let frame = null;
+    const update = () => {
+      frame = null;
+      const y = window.scrollY;
+      setScrolled(y > 12);
+      if (Math.abs(y - lastY.current) > 6) {
+        setHidden(y > lastY.current && y > 240);
+        lastY.current = y;
+      }
+    };
+    const onScroll = () => {
+      if (frame == null) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame != null) cancelAnimationFrame(frame);
+    };
+  }, []);
 
+  // Track which section sits in the middle of the viewport.
+  useEffect(() => {
+    if (!isHome) return undefined;
+    const sections = NAV_ITEMS.map(({ id }) =>
+      document.querySelector(`[data-section="${id}"]`)
+    ).filter(Boolean);
+    if (!sections.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.dataset.section);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [isHome, router.locale]);
+
+  // Lock page scroll while the mobile menu is open.
   useEffect(() => {
     if (!navOpen) return undefined;
     const onKeyDown = (e) => {
       if (e.key === "Escape") setNavOpen(false);
     };
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [navOpen]);
-
-  useEffect(() => {
-    const header = document.querySelector(`#${styles.headerBar}`);
-    const sticky = header.offsetHeight;
-
-    const handleScroll = () => {
-      if (window.scrollY >= sticky && window.innerWidth >= 992) {
-        header.classList.add(styles.stickyHeader);
-      } else {
-        header.classList.remove(styles.stickyHeader);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
+    document.body.style.overflow = "hidden";
+    lenis?.stop();
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = "";
+      lenis?.start();
     };
-  }, []);
+  }, [navOpen, lenis]);
+
+  const goTo = (id) => {
+    setNavOpen(false);
+    if (!isHome) {
+      router.push(`/#${id}`);
+      return;
+    }
+    const el = document.querySelector(`[data-section="${id}"]`);
+    // Let the menu unlock scrolling before Lenis animates.
+    requestAnimationFrame(() => scrollTo(el));
+  };
+
+  const goHome = (e) => {
+    setNavOpen(false);
+    if (!isHome) return;
+    e.preventDefault();
+    requestAnimationFrame(() => scrollTo(0, { offset: 0 }));
+  };
+
+  const headerClass = [
+    styles.header,
+    scrolled ? styles.scrolled : "",
+    hidden && !navOpen ? styles.hidden : "",
+    navOpen ? styles.open : "",
+  ].join(" ");
 
   return (
-    <header id={styles.headerBar}>
-      <div id={styles.headerLeft}>
-        <Link href="/" onClick={closeNav}>
-          <h4 id={styles.nameLogo}>
-            Sebastian <span className={styles.highlightMain}>Arango</span>
-          </h4>
+    <header className={headerClass}>
+      <div className={styles.bar}>
+        <Link href="/" className={styles.logo} onClick={goHome}>
+          <span className={styles.monogram} aria-hidden="true">
+            SA
+          </span>
+          <span className={styles.logoText}>Sebastian Arango</span>
         </Link>
-      </div>
-      <div id={styles.headerRight}>
-        <div id={styles.socials}>
-          <Link
-            href="https://www.linkedin.com/in/sebastian-zambrano-arango-4335361b3/"
-            target="_blank"
-          >
-            <img
-              src="/icons/linkedin.svg"
-              alt="LinkedIn Icon"
-              width="24"
-              height="24"
-            />
-          </Link>
-          <Link href="https://github.com/SebasAran16" target="_blank">
-            <img
-              src="/icons/github.svg"
-              alt="GitHub Icon"
-              width="24"
-              height="24"
-            />
-          </Link>
-          <Link href="https://twitter.com/Sebas_aran16" target="_blank">
-            <img
-              src="/icons/twitter.svg"
-              alt="Twitter Icon"
-              width="24"
-              height="24"
-            />
-          </Link>
-        </div>
-        <button
-          type="button"
-          className={styles.iconButton}
-          aria-label={navOpen ? "Close menu" : "Open menu"}
-          aria-expanded={navOpen}
-          onClick={toggleNav}
-        >
-          <Image
-            className={styles.navToggler}
-            src="/icons/menu.png"
-            alt=""
-            width="35"
-            height="35"
-            priority
-          />
-        </button>
-        <nav
-          id={styles.navBar}
-          className={navOpen ? "" : styles.hiddenNav}
-          data-lenis-prevent
-        >
-          <div id={styles.firstsNav}>
-            <div id={styles.switcherContainer}>
-              <Link
-                href={router.asPath}
-                locale="en"
-                className={router.locale == "en" ? styles.activeLanguage : ""}
-              >
-                <p>EN</p>
-              </Link>
-              <p>/</p>
-              <Link
-                href={router.asPath}
-                locale="es"
-                className={router.locale == "es" ? styles.activeLanguage : ""}
-              >
-                <p>ES</p>
-              </Link>
-            </div>
+
+        <nav className={styles.desktopNav} aria-label="Primary">
+          {NAV_ITEMS.map((item) => (
             <button
+              key={item.id}
               type="button"
-              className={styles.iconButton}
-              aria-label="Close menu"
-              onClick={closeNav}
+              className={`${styles.navLink} ${
+                active === item.id ? styles.navLinkActive : ""
+              }`}
+              onClick={() => goTo(item.id)}
             >
-              <Image
-                className={styles.navToggler}
-                src="/icons/cross.png"
-                alt=""
-                width="30"
-                height="30"
-              />
+              {t(item.labelKey)}
             </button>
+          ))}
+        </nav>
+
+        <div className={styles.actions}>
+          <div className={styles.locales}>
+            {LOCALES.map((locale) => (
+              <Link
+                key={locale}
+                href={router.asPath}
+                locale={locale}
+                scroll={false}
+                className={router.locale === locale ? styles.localeActive : ""}
+                aria-current={router.locale === locale ? "true" : undefined}
+              >
+                {locale.toUpperCase()}
+              </Link>
+            ))}
           </div>
-          <button
-            id="home"
-            onClick={(e) => {
-              navPressed(e);
-            }}
-          >
-            {t("buttons.home")}
-          </button>
-          <button
-            id="about"
-            onClick={(e) => {
-              navPressed(e);
-            }}
-          >
-            {t("buttons.about")}
-          </button>
-          <button
-            id="portfolio"
-            onClick={(e) => {
-              navPressed(e);
-            }}
-          >
-            {t("buttons.portfolio")}
-          </button>
-          <button
-            id="certifications"
-            onClick={(e) => {
-              navPressed(e);
-            }}
-          >
-            {t("buttons.certifications")}
-          </button>
-          <button
-            id="contact"
-            onClick={(e) => {
-              navPressed(e);
-            }}
-          >
-            {t("buttons.contact")}
-          </button>
           {process.env.NODE_ENV !== "production" && (
-            <Link
-              className={styles.cvButton}
-              href="/cv"
-              onClick={closeNav}
-            >
+            <Link className={styles.cvButton} href="/cv">
               {t("buttons.cv")}
             </Link>
           )}
+          <button
+            type="button"
+            className={styles.menuButton}
+            aria-label={navOpen ? t("buttons.close") : t("buttons.menu")}
+            aria-expanded={navOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setNavOpen((open) => !open)}
+          >
+            <span className={styles.menuLines} aria-hidden="true">
+              <span />
+              <span />
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="mobile-menu"
+        className={styles.mobileMenu}
+        aria-hidden={!navOpen}
+        data-lenis-prevent
+      >
+        <nav className={styles.mobileNav} aria-label="Mobile">
+          {NAV_ITEMS.map((item, i) => (
+            <button
+              key={item.id}
+              type="button"
+              tabIndex={navOpen ? 0 : -1}
+              style={{ "--i": i }}
+              onClick={() => goTo(item.id)}
+            >
+              <span className={styles.mobileIndex}>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              {t(item.labelKey)}
+            </button>
+          ))}
         </nav>
+        <div className={styles.mobileFooter}>
+          {socials.map((social) => (
+            <a
+              key={social.href}
+              href={social.href}
+              target="_blank"
+              rel="noreferrer"
+              tabIndex={navOpen ? 0 : -1}
+            >
+              {social.name}
+            </a>
+          ))}
+        </div>
       </div>
     </header>
   );

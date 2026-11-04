@@ -1,250 +1,228 @@
-// Variables
-$main-color: #0d0d0d
-$secondary-color: #FF2D7B
-$accent-color: #00F0FF
-$sides-space: 0 2rem
+@use "../mixins" as *
 
-// Header Styling //
-
-.highlightMain
-    color: $secondary-color
-
-#headerBar
-    display: flex
-    justify-content: space-between
-    position: absolute
-    top: 0
-    left: 0
-    color: white
-    width: 100%
-    height: 70px
+.header
+    position: fixed
+    inset: 0 0 auto 0
     z-index: 100
-    border-bottom: 1px solid rgba(255, 45, 123, 0.2)
+    transition: transform 0.5s $ease-out
+    &::before
+        content: ""
+        position: absolute
+        inset: 0
+        height: var(--header-h)
+        background: rgba(10, 10, 10, 0.86)
+        backdrop-filter: saturate(160%) blur(16px)
+        -webkit-backdrop-filter: saturate(160%) blur(16px)
+        border-bottom: 1px solid var(--line)
+        opacity: 0
+        transition: opacity 0.4s $ease-out
+        pointer-events: none
 
-#headerLeft
+.scrolled::before
+    opacity: 1
+
+.hidden
+    transform: translate3d(0, -100%, 0)
+
+.bar
+    +container
+    position: relative
+    z-index: 2
+    height: var(--header-h)
     display: flex
     align-items: center
-    padding: 0 5%
-    padding-right: 0
-    a
-        text-decoration: none
-        color: white
+    justify-content: space-between
+    gap: 1.5rem
 
-#nameLogo
-    transition: all 0.2s
-    text-shadow: 2px 2px 0px $secondary-color
-    letter-spacing: -0.02em
-    &:hover
-        cursor: pointer
-        color: $accent-color
-        text-shadow: 2px 2px 0px $accent-color
-    &:active
-        transform: none
-        transition: none
+// Logo //
 
-#headerRight
-    display: flex
-    align-items: center
-    padding: 0 5%
-    padding-left: 0
-    img
-        margin: 0 0.1rem
-        transition: all 0.3s
-        filter: invert(1)
-        &:hover
-            filter: invert(1) drop-shadow(0 0 4px $accent-color)
-            cursor: pointer
-
-#socials
-    display: flex
-    align-items: center
-    a
-        display: inline-flex
-        align-items: center
-        padding: 0.4rem
-
-.iconButton
+.logo
     display: inline-flex
     align-items: center
-    justify-content: center
-    background: none
-    border: none
-    padding: 0.35rem
-    cursor: pointer
+    gap: 0.75rem
+    text-decoration: none
+    color: var(--fg)
 
-.navToggler
+.monogram
+    display: grid
+    place-items: center
+    width: 34px
+    height: 34px
+    border-radius: 9px
+    background: var(--fg)
+    color: var(--bg)
+    font-size: 0.8rem
+    font-weight: 700
+    letter-spacing: -0.02em
+    transition: transform 0.5s $ease-out
+    .logo:hover &
+        transform: rotate(-8deg) scale(1.05)
 
-// Nav Styling //
+.logoText
+    font-weight: 600
+    font-size: 0.95rem
+    letter-spacing: -0.01em
 
-#navBar
-    display: flex
-    flex-direction: column
-    position: absolute
-    top: 0
-    right: 0
-    backdrop-filter: blur(20px)
-    border-radius: 0
-    overflow: hidden
-    width: 60vw
-    padding: 1rem
+// Desktop nav //
+
+.desktopNav
+    display: none
     align-items: center
-    background: rgba(13, 13, 13, 0.95)
-    border-left: 2px solid $secondary-color
-    border-bottom: 2px solid $secondary-color
-    box-shadow: -4px 4px 0 rgba(0, 240, 255, 0.25)
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s
-    > button
-        padding: 1rem
-        border-radius: 0
-        margin-bottom: 10%
-        font-weight: 700
-        text-align: center
-        text-shadow: none
-        width: 60%
-        background: none
-        border: 2px solid $secondary-color
-        color: white
-        font-size: 18px
-        text-transform: uppercase
-        letter-spacing: 0.1em
-        transition: all 0.2s
+    gap: 0.25rem
+    padding: 4px
+    border: 1px solid var(--line)
+    border-radius: 999px
+    background: rgba(255, 255, 255, 0.02)
+    +from($bp-lg)
+        display: flex
+
+.navLink
+    position: relative
+    padding: 0.5rem 0.95rem
+    border: none
+    border-radius: 999px
+    background: transparent
+    color: var(--muted)
+    font-size: 0.875rem
+    font-weight: 500
+    cursor: pointer
+    transition: color 0.3s $ease-out, background-color 0.3s $ease-out
+    &:hover
+        color: var(--fg)
+
+.navLinkActive
+    color: var(--fg)
+    background: rgba(255, 255, 255, 0.08)
+
+// Right-hand actions //
+
+.actions
+    display: flex
+    align-items: center
+    gap: 0.75rem
+
+.locales
+    display: flex
+    align-items: center
+    gap: 2px
+    font-family: var(--font-mono)
+    font-size: 0.75rem
+    a
+        padding: 0.35rem 0.5rem
+        border-radius: 6px
+        color: var(--muted)
+        text-decoration: none
+        transition: color 0.3s $ease-out, background-color 0.3s $ease-out
         &:hover
-            transform: translate(-2px, -2px)
-            box-shadow: 4px 4px 0px $accent-color
-            cursor: pointer
-            background: rgba(255, 45, 123, 0.15)
-        &:active
-            transform: translate(0, 0)
-            box-shadow: none
+            color: var(--fg)
+
+.localeActive
+    color: var(--fg) !important
+    background: rgba(255, 255, 255, 0.08)
 
 .cvButton
-    padding: 1rem
-    border-radius: 0
-    margin-bottom: 10%
-    font-weight: 700
-    text-align: center
-    text-shadow: none
-    width: 60%
-    background: rgba(0, 240, 255, 0.1)
-    border: 2px solid $accent-color
-    color: white
-    font-size: 18px
-    text-transform: uppercase
-    letter-spacing: 0.1em
-    text-decoration: none
-    transition: all 0.2s
-    &:hover
-        transform: translate(-2px, -2px)
-        box-shadow: 4px 4px 0px $secondary-color
-        cursor: pointer
-        background: rgba(0, 240, 255, 0.2)
-    &:active
-        transform: translate(0, 0)
-        box-shadow: none
+    +button-primary
+    display: none
+    height: 38px
+    padding: 0 1rem
+    font-size: 0.85rem
+    +from($bp-lg)
+        display: inline-flex
 
-.hiddenNav
-    opacity: 0
-    transform: translateY(-14px)
-    visibility: hidden
-    pointer-events: none
+// Mobile menu //
 
-#firstsNav
-    display: flex
-    align-items: center
-    justify-content: space-around
-    margin-bottom: 20%
-    width: 100%
-
-#switcherContainer
-    display: flex
-    align-items: center
-    justify-content: center
-    margin-right: 5%
-    display: flex
-    a
-        text-decoration: none
-        margin: 0.5rem
-        color: #8a8a8a
-        transition: all 0.2s
-        &:hover
-            transform: scale(1.1)
-            color: $accent-color
-        &:active
-            transform: none
-            p
-                color: white
-
-.activeLanguage
-    p
-        color: $accent-color
-        transform: scale(1.1)
-        text-shadow: 0 0 8px rgba(0, 240, 255, 0.5)
-
-.stickyHeader
-    position: sticky !important
-    z-index: 5 !important
-    backdrop-filter: blur(20px)
-    background: rgba(13, 13, 13, 0.9) !important
-    border-bottom: 1px solid $secondary-color !important
-    animation: headerDrop 0.25s ease
-
-@keyframes headerDrop
-    from
-        transform: translateY(-100%)
-    to
-        transform: translateY(0)
-
-@media screen and (min-width: 992px)
-    .navToggler,
-    .iconButton
+.menuButton
+    display: grid
+    place-items: center
+    width: 42px
+    height: 42px
+    border: 1px solid var(--line-strong)
+    border-radius: 999px
+    background: transparent
+    cursor: pointer
+    +from($bp-lg)
         display: none
 
-    #headerBar
-        height: 80px
-        padding: 2rem 0
+.menuLines
+    position: relative
+    display: block
+    width: 16px
+    height: 8px
+    span
+        position: absolute
+        left: 0
+        width: 100%
+        height: 1.5px
+        background: var(--fg)
+        border-radius: 2px
+        transition: transform 0.45s $ease-out, top 0.45s $ease-out
+        &:first-child
+            top: 0
+        &:last-child
+            top: 100%
 
-    #navBar
-        display: flex !important
-        flex-direction: row
-        align-items: center
-        background: none
-        padding: 0
-        position: static
-        width: auto
-        height: auto
-        margin-left: 1rem
-        backdrop-filter: none
-        overflow: initial
+.open .menuLines span
+    top: 50%
+    &:first-child
+        transform: translateY(-50%) rotate(45deg)
+    &:last-child
+        transform: translateY(-50%) rotate(-45deg)
+
+.mobileMenu
+    position: fixed
+    inset: 0
+    z-index: 1
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    padding: calc(var(--header-h) + 2rem) var(--gutter) 2rem
+    background: var(--bg)
+    clip-path: inset(0 0 100% 0)
+    visibility: hidden
+    transition: clip-path 0.7s $ease-out, visibility 0s linear 0.7s
+    +from($bp-lg)
+        display: none
+
+.open .mobileMenu
+    clip-path: inset(0 0 0 0)
+    visibility: visible
+    transition: clip-path 0.7s $ease-out, visibility 0s
+
+.mobileNav
+    display: flex
+    flex-direction: column
+    button
+        display: flex
+        align-items: baseline
+        gap: 1rem
+        padding: 0.9rem 0
         border: none
-        box-shadow: none
-        opacity: 1
-        transform: none
-        visibility: visible
-        pointer-events: auto
-        transition: none
-        > button
-            padding: 0.5rem
-            height: 60px
-            margin: 0 1rem
-            background: none
-            border: 1px solid transparent
-            &:hover
-                border-color: $secondary-color
+        border-bottom: 1px solid var(--line)
+        background: none
+        color: var(--fg)
+        font-size: clamp(1.9rem, 8vw, 2.6rem)
+        font-weight: 600
+        letter-spacing: -0.03em
+        text-align: left
+        cursor: pointer
+        opacity: 0
+        transform: translate3d(0, 24px, 0)
+        transition: opacity 0.5s $ease-out, transform 0.6s $ease-out
 
-    .cvButton
-        width: auto
-        margin: 0 1rem
-        margin-bottom: 0
-        padding: 0.75rem 1rem
-        font-size: 14px
+.open .mobileNav button
+    opacity: 1
+    transform: none
+    transition-delay: calc(0.15s + var(--i) * 0.05s)
 
-    #firstsNav
-        margin: 1rem
-        width: auto
+.mobileIndex
+    +mono-label
 
-    #headerRight
-        justify-content: space-between
-
-@media screen and (min-width: 1200px)
-    #headerBar
-        justify-content: space-around
+.mobileFooter
+    display: flex
+    gap: 1.5rem
+    a
+        color: var(--muted)
+        text-decoration: none
+        font-size: 0.95rem
+        &:hover
+            color: var(--fg)

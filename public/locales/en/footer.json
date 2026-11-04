@@ -7,5 +7,8 @@
     "message": "Message",
     "send": "Send"
   },
-  "cv": "Download CV"
+  "cv": "Download CV",
+  "rights": "All rights reserved.",
+  "backToTop": "Back to top",
+  "elsewhere": "Elsewhere"
 }

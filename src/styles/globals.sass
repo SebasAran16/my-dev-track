@@ -1,142 +1,144 @@
-// Variables
-$main-color: #0d0d0d
-$secondary-color: #FF2D7B
-$accent-color: #00F0FF
-$acid-color: #E5FF00
+@use "mixins" as *
 
-*
-    padding: 0
-    margin: 0
+// Design tokens. Sections opt into the light palette with the `.theme-light`
+// class, so every component reads colors from variables and adapts.
+:root
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
+    --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace
+    --container: 1240px
+    --gutter: 1.25rem
+    --header-h: 68px
+    --radius: 14px
+    --radius-lg: 22px
+
+    --bg: #0a0a0a
+    --bg-elev: #131313
+    --bg-soft: #1a1a1a
+    --fg: #f5f5f3
+    --fg-soft: #d4d4d1
+    --muted: #8c8c88
+    --line: rgba(255, 255, 255, 0.09)
+    --line-strong: rgba(255, 255, 255, 0.22)
+    --accent: #3ddc84
+
+    color-scheme: dark
+
+    +from($bp-md)
+        --gutter: 2rem
+    +from($bp-lg)
+        --gutter: 3rem
+        --header-h: 76px
+
+.theme-light
+    --bg: #f4f4f1
+    --bg-elev: #ffffff
+    --bg-soft: #ebebe7
+    --fg: #0a0a0a
+    --fg-soft: #2b2b2a
+    --muted: #6b6b67
+    --line: rgba(0, 0, 0, 0.09)
+    --line-strong: rgba(0, 0, 0, 0.2)
+    --accent: #12a150
+    color-scheme: light
+    background: var(--bg)
+    color: var(--fg)
+
+*, *::before, *::after
     box-sizing: border-box
-
-*, *:before, *:after
-    box-sizing: inherit
+    margin: 0
+    padding: 0
 
 html
-    scroll-behavior: smooth
+    -webkit-text-size-adjust: 100%
+    text-rendering: optimizeLegibility
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+
+// Lenis drives smooth scrolling; native smooth scroll would fight it.
+html.lenis, html.lenis body
+    height: auto
+
+.lenis.lenis-smooth
+    scroll-behavior: auto !important
+
+.lenis.lenis-stopped
+    overflow: hidden
 
 body
+    background: var(--bg)
+    color: var(--fg)
+    font-family: var(--font-sans)
     font-size: 16px
-    background-color: $main-color
-    font-family: 'Space Mono', monospace
-    button
-        font-family: 'Space Mono', monospace
-    *
-        box-sizing: border-box
+    line-height: 1.6
+    font-feature-settings: "ss01", "cv11"
+
+h1, h2, h3, h4, h5, h6
+    font-weight: 600
+    line-height: 1.1
+    letter-spacing: -0.025em
+    color: var(--fg)
 
 p
-    max-width: 650px
-    color: #c0c0c0
-    line-height: 1.7
-    letter-spacing: 0.02em
+    color: var(--fg-soft)
 
-span
-    color: $accent-color
-    font-weight: 700
-    text-transform: uppercase
+a
+    color: inherit
 
-h1
-    font-size: 36px
-    font-weight: 700
-    color: white
-    text-transform: uppercase
-    letter-spacing: -0.03em
+img
+    display: block
+    max-width: 100%
 
-h2
-    font-size: 30px
-    font-weight: 700
-    color: white
-    text-transform: uppercase
-    letter-spacing: -0.02em
-
-h3
-    font-size: 24px
-    font-weight: 700
-    color: white
-    text-transform: uppercase
-    letter-spacing: -0.01em
-
-h4
-    font-size: 18px
-    font-weight: 700
-    color: white
-    letter-spacing: 0.05em
-
-h5
-    font-size: 17px
-    font-weight: 700
-    color: white
-    letter-spacing: 0.05em
+button
+    font: inherit
+    color: inherit
 
 ::selection
-    background: $secondary-color
-    color: $main-color
+    background: var(--fg)
+    color: var(--bg)
 
 :focus-visible
-    outline: 2px solid $accent-color
+    outline: 2px solid var(--fg)
     outline-offset: 3px
+    border-radius: 4px
 
 :focus:not(:focus-visible)
     outline: none
 
 ::-webkit-scrollbar
-    width: 8px
+    width: 10px
 
 ::-webkit-scrollbar-track
-    background: #1a1a1a
+    background: #0a0a0a
 
 ::-webkit-scrollbar-thumb
-    background: $secondary-color
-    border: 1px solid $accent-color
+    background: #2a2a2a
+    border: 2px solid #0a0a0a
+    border-radius: 999px
 
 ::-webkit-scrollbar-thumb:hover
-    background: $accent-color
+    background: #444
 
-@media screen and (min-width: 768px)
-    body
-        font-size: 18px
+// Scroll reveal. Only applies when JS is running (the `js` class is set
+// inline in _document), so content is never hidden for no-JS visitors.
+html.js [data-reveal]
+    opacity: 0
+    transform: translate3d(0, 28px, 0)
+    transition: opacity 0.9s $ease-out, transform 0.9s $ease-out
+    transition-delay: calc(var(--d, 0) * 90ms)
 
-    h1
-        font-size: 44px
-
-    h2
-        font-size: 38px
-
-    h3
-        font-size: 32px
-
-    h4
-        font-size: 26px
-
-    h5
-        font-size: 23px
-
-@media screen and (min-width: 992px)
-    body
-        font-size: 20px
-
-    h1
-        font-size: 52px
-
-    h2
-        font-size: 46px
-
-    h3
-        font-size: 40px
-
-    h4
-        font-size: 34px
-
-    h5
-        font-size: 29px
+html.js [data-reveal].is-revealed
+    opacity: 1
+    transform: none
 
 @media (prefers-reduced-motion: reduce)
-    html
-        scroll-behavior: auto
+    html.js [data-reveal]
+        opacity: 1
+        transform: none
     *, *::before, *::after
         animation-duration: 0.01ms !important
         animation-iteration-count: 1 !important
         transition-duration: 0.01ms !important
+        transition-delay: 0ms !important
 
 @media print
     html, body

@@ -10,7 +10,9 @@
     },
     "moreAbout": " AI Enthusiast",
     "firstButton": "About Me",
-    "secondButton": "Contact Me"
+    "secondButton": "Contact Me",
+    "currently": "Currently {{role}} at {{company}}",
+    "scroll": "Scroll"
   },
   "about": {
     "whoAmI": "Who am I?",
@@ -21,9 +23,9 @@
     }
   },
   "portfolio": {
-    "title": "Portfolio:",
+    "title": "Portfolio",
     "certifications": {
-      "title": "Certifications:",
+      "title": "Certifications",
       "issued": "Issued",
       "expires": "Expires",
       "expired": "Expired",
@@ -33,7 +35,7 @@
       "verify": "Verify credential"
     },
     "courses": {
-      "title": "Courses Done:",
+      "title": "Courses Done",
       "patrick": {
         "title": "Learn Blockchain, Solidity, and Full Stack Web3 Development with JavaScript (32-Hour Course)",
         "description": "This was the greatest, longest and most advanced course I have done on Solidity so far, this covered every aspect needed to be a Web3Fullstack, from Solidity Syntax to be able to code our own NFT Marketplace and deploy on a website! Also covered important topics as secuity, proxies and governance tokens."
@@ -68,10 +70,11 @@
       "freecode": {
         "title": "JavaScript Basics",
         "description": "First course I did when I started my journey for a Web3 Fullstack Dev, it was clear, helped me get and remember how the logic of programming works and some of the basic JavaScript functionalities, but as I had no background or guidance, I did not get it's potential and went to learn Solidity."
-      }
+      },
+      "visit": "Visit course"
     },
     "projectsMade": {
-      "title": "Projects Made:",
+      "title": "Projects Made",
       "tabs": {
         "ethermail": "EtherMail",
         "mutantApes": "Mutant Apes",
@@ -163,6 +166,35 @@
       },
       "moreProjects": "Many more coming..."
     },
-    "languages": "Programming Languages:"
+    "languages": "Languages & Tools",
+    "experience": {
+      "title": "Where I've worked",
+      "promoted": "Promoted",
+      "keyWork": "Key work",
+      "stack": "Stack",
+      "visit": "Visit site"
+    }
+  },
+  "sections": {
+    "about": "About",
+    "experience": "Experience",
+    "projects": "Projects",
+    "stack": "Stack",
+    "certifications": "Certifications",
+    "courses": "Education",
+    "contact": "Contact"
+  },
+  "stats": {
+    "years": "Years building",
+    "projects": "Projects shipped",
+    "certifications": "Certifications",
+    "courses": "Courses completed"
+  },
+  "time": {
+    "present": "Present",
+    "years_one": "{{count}} yr",
+    "years_other": "{{count}} yrs",
+    "months_one": "{{count}} mo",
+    "months_other": "{{count}} mos"
   }
 }

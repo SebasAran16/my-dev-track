@@ -7,5 +7,8 @@
     "message": "Mensaje",
     "send": "Enviar"
   },
-  "cv": "Descargar CV"
+  "cv": "Descargar CV",
+  "rights": "Todos los derechos reservados.",
+  "backToTop": "Volver arriba",
+  "elsewhere": "En otros sitios"
 }
