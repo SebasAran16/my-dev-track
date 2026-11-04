@@ -1,56 +1,69 @@
-$main-color: #0d0d0d
-$secondary-color: #FF2D7B
-$accent-color: #00F0FF
-$sides-space: 0 2rem
+@use "mixins" as *
 
-#thanksSection
-    width: 100%
-    background-image: url(/backgrounds/thanks/medium-thanks-background.webp)
-    background-repeat: no-repeat
-    background-size: cover
-    margin: auto
-    min-height: 100vh
+.thanks
     display: grid
-    grid-template-rows: 100px 1fr
-    grid-template-columns: 1fr
-    position: relative
-    &::after
-        content: ""
-        position: absolute
-        inset: 0
-        background: rgba(13, 13, 13, 0.6)
-        pointer-events: none
-    h1
-        color: $accent-color
-        text-shadow: 3px 3px 0px $secondary-color
-        position: relative
-        z-index: 1
-    h3
-        text-shadow: none
-        color: white
-        position: relative
-        z-index: 1
-    p
-        color: #c0c0c0
-        position: relative
-        z-index: 1
+    place-items: center
+    min-height: 100vh
+    min-height: 100svh
+    padding: calc(var(--header-h) + 2rem) var(--gutter) 3rem
+    background: radial-gradient(900px 500px at 50% 0%, rgba(255, 255, 255, 0.07), transparent 65%), var(--bg)
+
+.content
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 1.25rem
+    max-width: 720px
+    text-align: center
+
+.check
+    display: grid
+    place-items: center
+    width: 56px
+    height: 56px
+    border-radius: 50%
+    background: var(--fg)
+    color: var(--bg)
+    font-size: 1.4rem
+    font-weight: 700
+    animation: pop 0.8s $ease-out both
+
+.title
+    font-size: clamp(2.25rem, 6vw, 4rem)
+    letter-spacing: -0.045em
+    line-height: 1.02
+    animation: rise 0.9s $ease-out 0.1s both
+
+.subtitle
+    font-size: 1.15rem
+    color: var(--muted)
+    animation: rise 0.9s $ease-out 0.2s both
+
+.back
+    margin-top: 1rem
+    color: var(--fg-soft)
+    animation: rise 0.9s $ease-out 0.3s both
     a
+        color: var(--fg)
+        font-weight: 500
         text-decoration: none
-        color: $secondary-color
-        border-bottom: 1px dashed $secondary-color
-        position: relative
-        z-index: 1
-        transition: color 0.2s
+        border-bottom: 1px solid var(--line-strong)
+        transition: border-color 0.3s $ease-out
         &:hover
-            color: $accent-color
-            border-color: $accent-color
+            border-color: var(--fg)
 
-#thanksContent
-    margin: 2rem auto
-    grid-area: 2 / 1 / -1 / -1
-    position: relative
-    z-index: 1
+@keyframes pop
+    from
+        opacity: 0
+        transform: scale(0.6)
+    to
+        opacity: 1
+        transform: none
 
-@media screen and (min-width: 992px)
-    #thanksSection
-        background-image: url(/backgrounds/thanks/large-thanks-background.webp)
+@keyframes rise
+    from
+        opacity: 0
+        transform: translate3d(0, 16px, 0)
+    to
+        opacity: 1
+        transform: none

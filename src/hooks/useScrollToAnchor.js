@@ -8,24 +8,47 @@ export const experienceAnchorId = (companyId) => `experience-${companyId}`;
 export const certificationAnchorId = (certificationId) =>
   `certification-${certificationId}`;
 
-// Keep the target clear of the sticky desktop header.
-const HEADER_OFFSET = -80;
-const FLASH_MS = 1400;
+const FLASH_MS = 1600;
+
+// Keep targets clear of the fixed header (its height lives in a CSS variable).
+export const headerOffset = () => {
+  if (typeof window === "undefined") return 0;
+  const value = getComputedStyle(document.documentElement).getPropertyValue(
+    "--header-h"
+  );
+  return -((parseFloat(value) || 72) + 16);
+};
+
+export function useScrollTo() {
+  const lenis = useLenis();
+
+  return useCallback(
+    (target, { offset = headerOffset() } = {}) => {
+      if (target == null) return;
+      if (lenis) {
+        lenis.scrollTo(target, { offset, duration: 1.2 });
+        return;
+      }
+      if (typeof target === "number") {
+        window.scrollTo({ top: target, behavior: "smooth" });
+        return;
+      }
+      const top = target.getBoundingClientRect().top + window.scrollY + offset;
+      window.scrollTo({ top, behavior: "smooth" });
+    },
+    [lenis]
+  );
+}
 
 export function useScrollToAnchor() {
-  const lenis = useLenis();
+  const scrollTo = useScrollTo();
 
   return useCallback(
     (anchorId) => {
       const target = document.getElementById(anchorId);
       if (!target) return;
 
-      const offset = window.innerWidth >= 992 ? HEADER_OFFSET : 0;
-      if (lenis) {
-        lenis.scrollTo(target, { offset, duration: 1.2 });
-      } else {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      scrollTo(target);
 
       // Re-trigger the flash even when the same card is clicked twice in a row.
       target.classList.remove(styles.anchorFlash);
@@ -36,6 +59,6 @@ export function useScrollToAnchor() {
         FLASH_MS
       );
     },
-    [lenis]
+    [scrollTo]
   );
 }

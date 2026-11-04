@@ -10,10 +10,12 @@
     },
     "moreAbout": " Entusiasta de IA",
     "firstButton": "Sobre mi",
-    "secondButton": "Contactame"
+    "secondButton": "Contactame",
+    "currently": "Actualmente {{role}} en {{company}}",
+    "scroll": "Desliza"
   },
   "about": {
-    "whoAmI": "Quien soy?",
+    "whoAmI": "¿Quién soy?",
     "whoIAm": {
       "1": "Soy Sebastian Zambrano Arango, siempre he sido muy curioso y un entusiasta de la tecnología. Eso me llevó a descubrir Blockchain en 2021 y desde entonces comencé a aprender sobre cómo funciona la tecnología, y como me encantaron sus capacidades y funcionalidades, decidí que me dedicaría a ello.",
       "2": "Habiendo estudiado C++ en el colegio, comencé a aprender Solidity por mi cuenta con todos los recursos disponibles, completé varios cursos y me di cuenta de que necesitaba aprender más que Solidity si quería dedicarme a ello, fue entonces cuando aprendí sobre seguridad y optimización en Solidity junto con otros lenguajes y herramientas para ser un desarrollador Web3 Fullstack, como Javascript y React con NextJs. Y para probar todo lo que he aprendido, estoy construyendo mi propio protocolo, que se encuentra en su fase inicial en este momento.",
@@ -21,9 +23,9 @@
     }
   },
   "portfolio": {
-    "title": "Portafolio:",
+    "title": "Portafolio",
     "certifications": {
-      "title": "Certificaciones:",
+      "title": "Certificaciones",
       "issued": "Emitido",
       "expires": "Expira",
       "expired": "Expirado",
@@ -33,7 +35,7 @@
       "verify": "Verificar credencial"
     },
     "courses": {
-      "title": "Cursos hechos:",
+      "title": "Cursos hechos",
       "patrick": {
         "title": "Aprende Blockchain, Solidity y Desarrollo Full Stack Web3 con JavaScript (32 horas)",
         "description": "Este fue el mejor curso, más largo y avanzado que he realizado sobre Solidity hasta ahora, cubrió todos los aspectos necesarios para ser un Web3Fullstack, desde la sintaxis de Solidity hasta poder codificar nuestro propio mercado de NFT y desplegarlo en un sitio web. También se trataron temas importantes como la seguridad, los proxies y los tokens de gobernanza."
@@ -68,10 +70,11 @@
       "freecode": {
         "title": "JavaScript Básico",
         "description": "El primer curso que hice cuando comencé mi camino para convertirme en un desarrollador Web3 Fullstack. Fue claro y me ayudó a comprender y recordar cómo funciona la lógica de programación y algunas de las funcionalidades básicas de JavaScript. Sin embargo, como no tenía experiencia previa ni orientación, no comprendí todo su potencial y decidí aprender Solidity."
-      }
+      },
+      "visit": "Ver curso"
     },
     "projectsMade": {
-      "title": "Proyectos Hechos:",
+      "title": "Proyectos Hechos",
       "tabs": {
         "ethermail": "EtherMail",
         "mutantApes": "Mutant Apes",
@@ -163,6 +166,37 @@
       },
       "moreProjects": "Muchos más por venir..."
     },
-    "languages": "Lenguajes de Programación:"
+    "languages": "Lenguajes y Herramientas",
+    "experience": {
+      "title": "Dónde he trabajado",
+      "promoted": "Ascendido",
+      "keyWork": "Trabajo destacado",
+      "stack": "Stack",
+      "visit": "Visitar sitio"
+    }
+  },
+  "sections": {
+    "about": "Sobre mí",
+    "experience": "Experiencia",
+    "projects": "Proyectos",
+    "stack": "Stack",
+    "certifications": "Certificaciones",
+    "courses": "Formación",
+    "contact": "Contacto"
+  },
+  "stats": {
+    "years": "Años construyendo",
+    "projects": "Proyectos entregados",
+    "certifications": "Certificaciones",
+    "courses": "Cursos completados"
+  },
+  "time": {
+    "present": "Actualidad",
+    "years_one": "{{count}} año",
+    "years_other": "{{count}} años",
+    "years_many": "{{count}} años",
+    "months_one": "{{count}} mes",
+    "months_other": "{{count}} meses",
+    "months_many": "{{count}} meses"
   }
 }

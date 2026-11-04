@@ -5,6 +5,10 @@
     "portfolio": "Portfolio",
     "certifications": "Certifications",
     "contact": "Contact me",
-    "cv": "Download CV"
+    "cv": "Download CV",
+    "experience": "Experience",
+    "projects": "Projects",
+    "menu": "Menu",
+    "close": "Close"
   }
 }

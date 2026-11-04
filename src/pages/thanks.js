@@ -7,12 +7,16 @@ import ThanksLayout from "@/layouts/thanks-layout";
 export default function Thanks() {
   const { t } = useTranslation("thanks");
   return (
-    <section id={styles.thanksSection}>
-      <div id={styles.thanksContent}>
-        <h1>{t("title")}</h1>
-        <h3>{t("subtitle")}</h3>
-        <p>
-          {t("backText")} <Link href="/">{t("anchor")}</Link>
+    <section className={styles.thanks}>
+      <div className={styles.content}>
+        <span className={styles.check} aria-hidden="true">
+          ✓
+        </span>
+        <h1 className={styles.title}>{t("title")}</h1>
+        <p className={styles.subtitle}>{t("subtitle")}</p>
+        <p className={styles.back}>
+          {t("backText")}
+          <Link href="/">{t("anchor")}</Link>
         </p>
       </div>
     </section>
@@ -21,7 +25,11 @@ export default function Thanks() {
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale ?? "en", ["header", "thanks"])),
+    ...(await serverSideTranslations(locale ?? "en", [
+      "header",
+      "thanks",
+      "common",
+    ])),
   },
 });
 
