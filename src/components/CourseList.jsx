@@ -14,6 +14,7 @@ export default function CourseList({ t }) {
         ];
         const open = openKey === course.key;
         const panelId = `course-${course.key}`;
+        const headerId = `${panelId}-header`;
 
         return (
           <li
@@ -25,6 +26,7 @@ export default function CourseList({ t }) {
           >
             <button
               type="button"
+              id={headerId}
               className={styles.courseHeader}
               aria-expanded={open}
               aria-controls={panelId}
@@ -48,7 +50,12 @@ export default function CourseList({ t }) {
               <span className={styles.courseToggle} aria-hidden="true" />
             </button>
 
-            <div id={panelId} className={styles.coursePanel} role="region">
+            <div
+              id={panelId}
+              className={styles.coursePanel}
+              role="region"
+              aria-labelledby={headerId}
+            >
               <div className={styles.coursePanelInner}>
                 {descriptionKeys.map((key) => (
                   <p key={key}>{t(key)}</p>

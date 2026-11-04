@@ -37,7 +37,6 @@
     display: inline-block
     transition: transform 0.35s $ease-out
 
-a:hover > .arrow,
 a:hover .arrow
     transform: translate(2px, -2px)
 
@@ -98,21 +97,10 @@ a:hover .arrow
 .sectionIndex
     color: var(--fg)
 
-.sectionHeadingMain
-    display: flex
-    flex-wrap: wrap
-    align-items: flex-end
-    justify-content: space-between
-    gap: 1.5rem
-
 .sectionTitle
     font-size: clamp(2.25rem, 5.5vw, 4.25rem)
     letter-spacing: -0.045em
     line-height: 1
-
-.sectionHeadingAside
-    max-width: 36ch
-    color: var(--muted)
 
 // Hero //
 
@@ -300,11 +288,11 @@ a:hover .arrow
         line-height: 1.75
         color: var(--muted)
 
-.lead
-    font-size: clamp(1.3rem, 2.4vw, 1.75rem) !important
-    line-height: 1.45 !important
+.aboutText .lead
+    font-size: clamp(1.3rem, 2.4vw, 1.75rem)
+    line-height: 1.45
     letter-spacing: -0.015em
-    color: var(--fg) !important
+    color: var(--fg)
 
 .stats
     display: grid

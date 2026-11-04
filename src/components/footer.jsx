@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { useTranslation } from "next-i18next";
 import styles from "@/styles/layout/Footer.module.sass";
 import { socials } from "@/constants/socials";
@@ -13,7 +14,7 @@ export default function Footer() {
   return (
     <footer className={styles.footer} data-section="contact" id="contact">
       <div className={styles.inner}>
-        <div className={styles.intro} data-reveal>
+        <div data-reveal>
           <span className={styles.label}>
             <span className={styles.labelIndex}>07</span>
             {tc("sections.contact")}
@@ -27,13 +28,7 @@ export default function Footer() {
               {socials.map((social) => (
                 <li key={social.href}>
                   <a href={social.href} target="_blank" rel="noreferrer">
-                    <img
-                      src={social.icon}
-                      alt=""
-                      width="18"
-                      height="18"
-                      loading="lazy"
-                    />
+                    <Image src={social.icon} alt="" width="18" height="18" />
                     {social.name}
                     <span className={styles.arrow} aria-hidden="true">
                       ↗

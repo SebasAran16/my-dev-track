@@ -37,13 +37,13 @@ export default function CertificationList({ certifications, t, locale, now }) {
           certification.issuedOn &&
             `${t("portfolio.certifications.issued")} ${formatDay(
               certification.issuedOn,
-              locale,
+              locale
             )}`,
           certification.expiresOn
             ? `${t(
                 expired
                   ? "portfolio.certifications.expired"
-                  : "portfolio.certifications.expires",
+                  : "portfolio.certifications.expires"
               )} ${formatDay(certification.expiresOn, locale)}`
             : t("portfolio.certifications.noExpiration"),
         ].filter(Boolean);
@@ -110,7 +110,7 @@ export default function CertificationList({ certifications, t, locale, now }) {
                     className={styles.certCompany}
                     onClick={() =>
                       scrollToAnchor(
-                        experienceAnchorId(certification.companyId),
+                        experienceAnchorId(certification.companyId)
                       )
                     }
                   >

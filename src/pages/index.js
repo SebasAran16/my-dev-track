@@ -66,7 +66,7 @@ export default function Home({ builtAt }) {
       {/* Hero */}
       <section className={styles.hero} data-section="home">
         <div className={styles.heroInner}>
-          <div className={styles.heroText}>
+          <div>
             {currentExperience && (
               <p className={styles.heroEyebrow}>
                 <span className={styles.liveDot} aria-hidden="true" />

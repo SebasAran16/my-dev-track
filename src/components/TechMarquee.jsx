@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import styles from "@/styles/Home.module.sass";
 import { codeLanguages, experiences, projects } from "@/constants/portfolio";
 
@@ -23,14 +24,7 @@ function Row({ hidden }) {
     <ul className={styles.marqueeRow} aria-hidden={hidden || undefined}>
       {tools.map((tool) => (
         <li key={tool.id} className={styles.marqueeItem}>
-          <img
-            src={tool.src}
-            alt=""
-            width="28"
-            height="28"
-            loading="lazy"
-            decoding="async"
-          />
+          <Image src={tool.src} alt="" width="28" height="28" />
           <span>{tool.name}</span>
         </li>
       ))}

@@ -25,11 +25,7 @@ export default function Thanks() {
 
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale ?? "en", [
-      "header",
-      "thanks",
-      "common",
-    ])),
+    ...(await serverSideTranslations(locale ?? "en", ["header", "thanks"])),
   },
 });
 

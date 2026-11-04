@@ -16,8 +16,14 @@ const countByCategory = projects.reduce((counts, project) => {
 
 function ProjectCard({ project, t, index }) {
   const links = [
-    project.siteUrl && { href: project.siteUrl, label: t(project.siteButtonKey) },
-    project.codeUrl && { href: project.codeUrl, label: t(project.codeButtonKey) },
+    project.siteUrl && {
+      href: project.siteUrl,
+      label: t(project.siteButtonKey),
+    },
+    project.codeUrl && {
+      href: project.codeUrl,
+      label: t(project.codeButtonKey),
+    },
   ].filter(Boolean);
 
   return (
@@ -84,7 +90,7 @@ export default function ProjectShowcase({ t }) {
   );
 
   return (
-    <div className={styles.projectShowcase}>
+    <div>
       <div
         className={styles.projectTabs}
         role="tablist"
